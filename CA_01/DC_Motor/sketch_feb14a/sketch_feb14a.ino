@@ -82,7 +82,7 @@ void loop() {
     Serial.println(pwm);
   }
   if (chDirectionButtonState == LOW) {
-    while(digitalRead(chDirectionButtonState) == LOW){}
+    while(digitalRead(chDirectionButtonPin) == LOW){}
     clockwise = !clockwise;
     Serial.println(clockwise);
   }
