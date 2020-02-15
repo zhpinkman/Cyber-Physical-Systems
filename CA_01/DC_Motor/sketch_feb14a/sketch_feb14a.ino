@@ -15,6 +15,8 @@ int buttonState = 0;         // variable for reading the pushbutton status
 void setup() {
   // initialize the LED pin as an output:
   pinMode(ledPin, OUTPUT);
+  pinMode(motorPin1, OUTPUT);
+  pinMode(motorPin2, OUTPUT);
   // initialize the pushbutton pin as an input:
   pinMode(startStopButtonPin, INPUT);
   pinMode(incSpeedButtonPin, INPUT);
@@ -41,9 +43,10 @@ void loop() {
   incSpeedButtonState = digitalRead(incSpeedButtonPin);
   decSpeedButtonState = digitalRead(decSpeedButtonPin);
   chDirectionButtonState = digitalRead(chDirectionButtonPin);
-  Serial.println(startStopButtonState);
+//  Serial.println(pwm);
+
   // check if the pushbutton is pressed. If it is, the buttonState is HIGH:
-  if (startStopButtonState == HIGH) {
+  if (startStopButtonState == LOW) {
     digitalWrite(ledPin, HIGH);
     if (pwmCounter < pwm) {
       if(clockwise){
@@ -59,22 +62,29 @@ void loop() {
     }
   } else {
     digitalWrite(ledPin, LOW);
+    digitalWrite(motorPin1, LOW);
+    digitalWrite(motorPin2, LOW);
   }
 
-  if (incSpeedButtonState == HIGH) {
-    pwm++;
+  if (incSpeedButtonState == LOW) {
+    Serial.println("inc");
+    while(digitalRead(incSpeedButtonPin) == LOW){}
+    pwm += 10;
     if(pwm > pwmMax)
       pwm = pwmMax;
+    Serial.println(pwm);
   }
-  if (decSpeedButtonState == HIGH) {
-    pwm--;
+  if (decSpeedButtonState == LOW) {
+    while(digitalRead(decSpeedButtonPin) == LOW){}
+    pwm -= 10;
     if(pwm < 0)
       pwm = 0;
+    Serial.println(pwm);
   }
-  if (chDirectionButtonState == HIGH) {
-    clockwise = true;
-  }else{
-    clockwise = false;
+  if (chDirectionButtonState == LOW) {
+    while(digitalRead(chDirectionButtonState) == LOW){}
+    clockwise = !clockwise;
+    Serial.println(clockwise);
   }
 
 }
