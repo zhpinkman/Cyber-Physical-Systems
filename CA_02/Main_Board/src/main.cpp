@@ -23,10 +23,14 @@ AltSoftSerial luxAltSoftSerial;
 void handleSerialBluetooth();
 void handleLux();
 void printLCD();
+void runLogic();
 
 float temperature, humidity, lux;
 int bluetoothState = 0;
 bool changeInSensors = false;
+int wateringAmount = 0;
+enum WateringUnit {Null = 0, CC = 1, Drop = 2};
+int wateringUnit = Null;
 
 void setup() {
   lcd.begin(20, 4);            // set up the LCD's number of columns and rows:
@@ -45,8 +49,30 @@ void loop() {
     handleLux();
   }
   if(changeInSensors){
+    runLogic();
     printLCD();
     changeInSensors = false;
+  }
+}
+
+void runLogic(){
+  if(humidity > 80){
+    wateringAmount = 0;
+    wateringUnit = Null;
+  }else if(humidity < 50){
+    wateringAmount = 15;
+    wateringUnit = CC;
+  }else{ // 50 <= humidity <= 80
+    wateringUnit = Drop;
+    if(temperature < 25 && lux < 600){
+      wateringAmount = 10;
+    }
+    if(temperature < 25 && lux > 600){
+      wateringAmount = 5;
+    }
+    if(temperature >= 25){
+      wateringAmount = 10;
+    }
   }
 }
 
@@ -56,25 +82,33 @@ void handleSerialBluetooth(){
     char incomingByteChar = Serial.read();
     if(incomingByteChar == BLUETOOTH_TEMPERATURE_START_CHAR)
       bluetoothState = GetTemperature;
-    if(incomingByteChar == BLUETOOTH_HUMIDITY_START_CHAR)
+    else if(incomingByteChar == BLUETOOTH_HUMIDITY_START_CHAR)
       bluetoothState = GetHumidity;
+    else
+      Serial.read(); // Data is out of order
   }
   if(bluetoothState == GetTemperature){
+    float oldTemperature = temperature;
     temperature = Serial.parseFloat();
     bluetoothState = Waiting;
-    changeInSensors = true;
+    if(temperature != oldTemperature)
+      changeInSensors = true;
   }
   if(bluetoothState == GetHumidity){
+    float oldHumidity = humidity;
     humidity = Serial.parseFloat();
     bluetoothState = Waiting;
-    changeInSensors = true;
+    if(humidity != oldHumidity)
+      changeInSensors = true;
   }
 }
 
 void handleLux(){
+  float oldLux = lux;
   lux = luxAltSoftSerial.parseFloat();
   Serial.println(lux);
-  changeInSensors = true;
+  if(lux != oldLux)
+    changeInSensors = true;
 }
 /*
   The circuit:
@@ -93,9 +127,20 @@ void handleLux(){
  * 
  * */
 void printLCD(){
+  lcd.clear();
   lcd.setCursor(0, 0);
   lcd.println(String(temperature).c_str());
   lcd.println(String(humidity).c_str());
   lcd.setCursor(0, 1);
   lcd.println(String(lux).c_str());
+  lcd.setCursor(0, 2);
+  if(wateringUnit == Null){
+    lcd.println("No Watering Yet");
+  }else{
+    lcd.println(String(wateringAmount));
+    if(wateringUnit == CC)
+      lcd.println("CC");
+    if(wateringUnit == Drop)
+      lcd.println("Drop");
+  }
 }
