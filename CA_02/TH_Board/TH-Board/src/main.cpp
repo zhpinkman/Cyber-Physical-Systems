@@ -20,9 +20,9 @@ void loop() {
 	float temperature = readTemperature();
 	float humidity = readHumidity();
 	Serial.print(BLUETOOTH_TEMPERATURE_START_CHAR);
-	Serial.print(temperature);
+	Serial.println(temperature);
 	Serial.print(BLUETOOTH_HUMIDITY_START_CHAR);
-	Serial.print(humidity);
+	Serial.println(humidity);
 }
 
 float readTemperature(){
