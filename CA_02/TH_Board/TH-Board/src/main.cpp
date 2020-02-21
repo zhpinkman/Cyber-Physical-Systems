@@ -4,8 +4,12 @@
 // SHT25 I2C address is 0x40(64)
 #define Addr 0x40
 
+#define BLUETOOTH_TEMPERATURE_START_CHAR '#'
+#define BLUETOOTH_HUMIDITY_START_CHAR '*'
+
 float readTemperature();
 float readHumidity();
+
 
 void setup() {
 	Wire.begin();                // join i2c bus (address optional for master)
@@ -13,8 +17,12 @@ void setup() {
 }
 
 void loop() {
-	readTemperature();
-	readHumidity();
+	float temperature = readTemperature();
+	float humidity = readHumidity();
+	Serial.print(BLUETOOTH_TEMPERATURE_START_CHAR);
+	Serial.print(temperature);
+	Serial.print(BLUETOOTH_HUMIDITY_START_CHAR);
+	Serial.print(humidity);
 }
 
 float readTemperature(){
@@ -37,12 +45,7 @@ float readTemperature(){
 		// Convert the data    
 		float cTemp = (((data[0] * 256.0 + data[1]) * 175.72) / 65536.0) - 46.85;    
 		float fTemp = (cTemp * 1.8) + 32;
-		// Output data to Serial Monitor    
-		Serial.print("Temperature in Celsius :");    
-		Serial.print(cTemp);    Serial.println(" C");    
-		Serial.print("Temperature in Fahrenheit :");    
-		Serial.print(fTemp);    
-		Serial.println(" F");
+		// Output data to Serial Monitor
 		return cTemp;
 	}  
 }
@@ -66,10 +69,7 @@ float readHumidity(){
 		data[1] = Wire.read();
 		// Convert the data    
 		float humidity = (((data[0] * 256.0 + data[1]) * 125.0) / 65536.0) - 6;
-		// Output data to Serial Monitor    
-		Serial.print("Relative Humidity :");    
-		Serial.print(humidity);    
-		Serial.println(" %RH");
+		// Output data to Serial Monitor
 		return humidity;
 	}
 }
