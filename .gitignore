@@ -5,3 +5,9 @@
 .vscode/c_cpp_properties.json
 .vscode/launch.json
 .vscode
+
+.idea/
+
+build.gradle
+
+local.properties
