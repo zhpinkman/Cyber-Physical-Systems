@@ -1,6 +1,9 @@
 package mohsen.zhivar.ali.superspinnerbros.Logic;
 
+import android.util.Log;
 import android.widget.ImageView;
+
+import mohsen.zhivar.ali.superspinnerbros.Config.Config;
 
 public class Ball {
     ImageView imageView;
@@ -13,5 +16,35 @@ public class Ball {
         this.imageView = imageView;
         x = imageView.getX();
         y = imageView.getY();
+        Log.d("Image", x + "|" + y + "|" + imageView.getX());
+        this.m = m;
+//        x = 0;
+//        y = 0;
+    }
+
+    public void move(double intervalSeconds) {
+        x = 0.5 * ax * Math.pow(intervalSeconds, 2) + vx * intervalSeconds + x;
+//        Log.d("T", intervalSeconds + "|" + 0.5 * ax * Math.pow(intervalSeconds, 2));
+        y = 0.5 * ay * Math.pow(intervalSeconds, 2) + vy * intervalSeconds + y;
+        vx = ax * intervalSeconds + vx;
+        vy = ay * intervalSeconds + vy;
+//        Log.d("POS", "" + x + "|" + y);
+//        Log.d("F", "" + ax + "|" + ay);
+        refreshImage();
+    }
+
+    private void refreshImage(){
+        imageView.setX((float)x);
+        imageView.setY((float)y);
+    }
+
+    public void updateAcceleration(double angleX, double angleY, double angleZ) {
+        double fX = m * Config.g * Math.sin(angleY);
+        double fY = m * Config.g * Math.sin(angleX);
+
+        ax = fX / m;
+        ay = fY / m;
+        ax *= Config.SPEED_UP;
+        ay *= Config.SPEED_UP;
     }
 }
