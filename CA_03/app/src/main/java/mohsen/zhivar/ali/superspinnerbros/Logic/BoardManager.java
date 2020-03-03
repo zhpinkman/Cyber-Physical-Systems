@@ -13,6 +13,7 @@ public class BoardManager {
     public BoardManager(Pair<Integer, Integer> widthHeight) {
         width = widthHeight.first;
         height = widthHeight.second;
+
     }
 
     public void addBall(ImageView ballImageView, double mass) {

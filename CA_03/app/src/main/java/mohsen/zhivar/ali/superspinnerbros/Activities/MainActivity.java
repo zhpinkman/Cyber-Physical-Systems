@@ -15,14 +15,29 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Button button = findViewById(R.id.button);
+        Button buttonGyro = findViewById(R.id.button_gyro);
+        Button buttonGravity = findViewById(R.id.button_gravity);
 
-        button.setOnClickListener(new View.OnClickListener() {
+        buttonGyro.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 // Code here executes on main thread after user presses button
                 try {
-                    Intent k = new Intent(MainActivity.this, GameActivity.class);
-                    startActivity(k);
+                    Intent intent = new Intent(MainActivity.this, GameActivity.class);
+                    intent.putExtra("sensor", "gyroscope");
+                    startActivity(intent);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        buttonGravity.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                // Code here executes on main thread after user presses button
+                try {
+                    Intent intent = new Intent(MainActivity.this, GameActivity.class);
+                    intent.putExtra("sensor", "gravity");
+                    startActivity(intent);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
