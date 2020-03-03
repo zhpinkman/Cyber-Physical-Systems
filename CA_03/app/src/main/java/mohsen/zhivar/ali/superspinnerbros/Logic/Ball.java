@@ -7,7 +7,7 @@ public class Ball {
     double m;  // Mass
     double x, y;  // Position
     double vx = 0, vy = 0;  // Velocity
-    double ax = 0, ay = 0;  //
+    double ax = 0, ay = 0;  //acceleration
 
     public Ball(ImageView imageView, double m) {
         this.imageView = imageView;

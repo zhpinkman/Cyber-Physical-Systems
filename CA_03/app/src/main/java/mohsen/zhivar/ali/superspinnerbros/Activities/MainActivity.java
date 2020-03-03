@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import mohsen.zhivar.ali.superspinnerbros.Config.Config;
 import mohsen.zhivar.ali.superspinnerbros.R;
 
 public class MainActivity extends AppCompatActivity {
@@ -23,7 +24,7 @@ public class MainActivity extends AppCompatActivity {
                 // Code here executes on main thread after user presses button
                 try {
                     Intent intent = new Intent(MainActivity.this, GameActivity.class);
-                    intent.putExtra("sensor", "gyroscope");
+                    intent.putExtra("sensor", Config.sensorType.GYROSCOPE);
                     startActivity(intent);
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -36,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
                 // Code here executes on main thread after user presses button
                 try {
                     Intent intent = new Intent(MainActivity.this, GameActivity.class);
-                    intent.putExtra("sensor", "gravity");
+                    intent.putExtra("sensor", Config.sensorType.GRAVITY);
                     startActivity(intent);
                 } catch (Exception e) {
                     e.printStackTrace();
