@@ -6,8 +6,8 @@
 .vscode/launch.json
 .vscode
 
-.idea/
+# .idea/
 
-build.gradle
+# build.gradle
 
-local.properties
+# local.properties
