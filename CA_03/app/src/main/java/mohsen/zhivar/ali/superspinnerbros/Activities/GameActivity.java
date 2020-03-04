@@ -1,14 +1,14 @@
 package mohsen.zhivar.ali.superspinnerbros.Activities;
 
-import android.app.Activity;
-import android.content.Context;
+//import android.app.Activity;
+//import android.content.Context;
+
 import android.graphics.Point;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
-import android.util.Log;
 import android.util.Pair;
 import android.view.Display;
 import android.view.Window;
@@ -84,7 +84,7 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
                 float axisSpeedX = event.values[0];
                 float axisSpeedY = event.values[1];
                 float axisSpeedZ = event.values[2];
-//                Log.d("A", ""+axisSpeedX + "|" + axisSpeedY + "|" + axisSpeedZ + "|" + dT);
+                System.out.println(" A "+axisSpeedX + "|" + axisSpeedY + "|" + axisSpeedZ + "|" + dT);
                 boardManager.updateAnglesByGyroscope(axisSpeedX, axisSpeedY, axisSpeedZ, dT);
             } else {
 

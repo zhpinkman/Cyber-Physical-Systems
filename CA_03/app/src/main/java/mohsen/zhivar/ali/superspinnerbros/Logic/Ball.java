@@ -2,7 +2,6 @@ package mohsen.zhivar.ali.superspinnerbros.Logic;
 
 import android.util.Log;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 
 import mohsen.zhivar.ali.superspinnerbros.Config.Config;
 
@@ -79,7 +78,7 @@ public class Ball {
     public void updateAcceleration(double angleX, double angleY, double angleZ) {
         double fX = m * Config.g * Math.sin(angleY);
         double fY = m * Config.g * Math.sin(angleX);
-        double N = m * Config.g * Math.cos(Math.atan(euclideanNorm(Math.sin(angleX), Math.sin(angleY)) / (Math.cos(angleX) + Math.cos(angleY))));  // ZHIVAR TODO Prove cos theta = cosx*cosy/2
+        double N = m * Config.g * Math.cos(Math.atan(euclideanNorm(Math.sin(angleX), Math.sin(angleY)) / (Math.cos(angleX) + Math.cos(angleY))));
         Log.d("NG1", fX + "|" + fY + "|" + N);
         if (this.isMoving() || this.canMove(fX, fY, N)) {
             double frictionMagnitude = N * Config.M_k;

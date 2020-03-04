@@ -1,6 +1,5 @@
 package mohsen.zhivar.ali.superspinnerbros.Logic;
 
-import android.util.Log;
 import android.util.Pair;
 import android.widget.ImageView;
 
@@ -14,7 +13,7 @@ import mohsen.zhivar.ali.superspinnerbros.Config.Config;
 public class BoardManager {
     List<Ball> balls = new ArrayList<>();
     int width, height;
-    double angleX, angleY, angleZ;  // Only X and Y matter
+    double angleX, angleY, angleZ;  // Only X and Y matter // so why we have angleZ :)))
 
     public BoardManager(Pair<Integer, Integer> widthHeight) {
         width = widthHeight.first;
