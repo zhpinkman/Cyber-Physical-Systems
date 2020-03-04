@@ -14,12 +14,14 @@ public class Ball {
     double ax = 0, ay = 0;  //acceleration
     double width = Config.BALL_WIDTH;
 
-    public Ball(ImageView imageView, double m) {
+    public Ball(ImageView imageView, double mass, double x, double y) {
         this.imageView = imageView;
-        this.m = m;
+        this.m = mass;
         imageView.getLayoutParams().height = (int)width;
         imageView.getLayoutParams().width = (int)width;
         imageView.requestLayout();
+        this.x = x;
+        this.y = y;
     }
 
     public void updateVelocity(double intervalSeconds, BoardManager boardManager) {

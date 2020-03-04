@@ -3,20 +3,27 @@ package mohsen.zhivar.ali.superspinnerbros.Activities;
 //import android.app.Activity;
 //import android.content.Context;
 
+import android.content.Context;
 import android.graphics.Point;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.Pair;
 import android.view.Display;
+import android.view.MotionEvent;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import mohsen.zhivar.ali.superspinnerbros.Config.Config;
 import mohsen.zhivar.ali.superspinnerbros.Config.Config.sensorType;
@@ -31,6 +38,8 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
     private Sensor sensor;
     private float timestamp;
 
+    private Context context;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,12 +50,39 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         setContentView(R.layout.activity_game);
+        context = this;
 
         sensorType = (sensorType) getIntent().getExtras().get("sensor");
         ((TextView) findViewById(R.id.textViewSensor)).setText(sensorType.toString());
 
         initBoard();
         initSensor(sensorType);
+
+        ConstraintLayout screen = findViewById(R.id.frameLayout);
+        screen.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+//                Log.d("Touch", event.getX() + "|" + event.getY());
+                if (event.getAction() == android.view.MotionEvent.ACTION_UP) {
+                    ImageView imageView = new ImageView(context);
+                    imageView.setImageResource(R.drawable.ball);
+
+                    ConstraintLayout constraintLayout = (ConstraintLayout) findViewById(R.id.frameLayout);
+                    ConstraintLayout.LayoutParams layoutParams = new ConstraintLayout.LayoutParams(
+                            ConstraintLayout.LayoutParams.WRAP_CONTENT,
+                            ConstraintLayout.LayoutParams.WRAP_CONTENT
+                    );
+                    constraintLayout.addView(imageView, layoutParams);
+;
+                    if(boardManager.getBallsCount() == 0){
+                        boardManager.addBall(imageView, Config.Mass1, event.getX(), event.getY());
+                    }else{
+                        boardManager.addBall(imageView, Config.Mass2, event.getX(), event.getY());
+                    }
+                }
+                return true;
+            }
+        });
     }
 
     protected void initSensor(sensorType sensorType) {
@@ -63,12 +99,8 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
         ImageView ballImageView1 = findViewById(R.id.ball1);
         ImageView ballImageView2 = findViewById(R.id.ball2);
         boardManager = new BoardManager(getDisplayWidthHeight());
-        ballImageView1.setX(20);
-        ballImageView1.setY(20);
-        ballImageView2.setX(150);
-        ballImageView2.setY(150);
-        boardManager.addBall(ballImageView1, Config.Mass1);
-        boardManager.addBall(ballImageView2, Config.Mass2);
+//        boardManager.addBall(ballImageView1, Config.Mass1);
+//        boardManager.addBall(ballImageView2, Config.Mass2);
     }
 
     protected Pair getDisplayWidthHeight() {
