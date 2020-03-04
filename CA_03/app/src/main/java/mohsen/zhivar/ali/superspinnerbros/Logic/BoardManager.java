@@ -32,7 +32,7 @@ public class BoardManager {
         return balls.size();
     }
 
-    protected TimerTask moveBalls(double intervalSeconds) {
+    protected synchronized TimerTask moveBalls(double intervalSeconds) {
         for (Ball ball : balls) {
             ball.updateAcceleration(angleX, angleY, angleZ);
             ball.updateVelocity(intervalSeconds, this);
@@ -114,7 +114,7 @@ public class BoardManager {
         return x >= width || x <= 0 || y >= height || y <= 0;
     }
 
-    public void addBall(ImageView ballImageView, double mass, double x, double y) {
+    public synchronized void addBall(ImageView ballImageView, double mass, double x, double y) {
         balls.add(new Ball(ballImageView, mass, x, y));
     }
 

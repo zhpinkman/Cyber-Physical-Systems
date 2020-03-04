@@ -25,6 +25,8 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
+import java.util.Random;
+
 import mohsen.zhivar.ali.superspinnerbros.Config.Config;
 import mohsen.zhivar.ali.superspinnerbros.Config.Config.sensorType;
 import mohsen.zhivar.ali.superspinnerbros.Logic.BoardManager;
@@ -59,13 +61,13 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
         initSensor(sensorType);
 
         ConstraintLayout screen = findViewById(R.id.frameLayout);
+
         screen.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
 //                Log.d("Touch", event.getX() + "|" + event.getY());
                 if (event.getAction() == android.view.MotionEvent.ACTION_UP) {
                     ImageView imageView = new ImageView(context);
-                    imageView.setImageResource(R.drawable.ball);
 
                     ConstraintLayout constraintLayout = (ConstraintLayout) findViewById(R.id.frameLayout);
                     ConstraintLayout.LayoutParams layoutParams = new ConstraintLayout.LayoutParams(
@@ -73,16 +75,25 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
                             ConstraintLayout.LayoutParams.WRAP_CONTENT
                     );
                     constraintLayout.addView(imageView, layoutParams);
-;
-                    if(boardManager.getBallsCount() == 0){
+                    if (boardManager.getBallsCount() == 0) {
+                        imageView.setImageResource(R.drawable.ball1);
                         boardManager.addBall(imageView, Config.Mass1, event.getX(), event.getY());
-                    }else{
+                    } else if (boardManager.getBallsCount() == 1) {
+                        imageView.setImageResource(R.drawable.ball5);
                         boardManager.addBall(imageView, Config.Mass2, event.getX(), event.getY());
+                    } else {
+                        imageView.setImageResource(R.drawable.ball);
+                        boardManager.addBall(imageView, makeRandomInt(1, 5000), event.getX(), event.getY());
                     }
                 }
                 return true;
             }
         });
+    }
+
+    private int makeRandomInt(int min, int max) {
+        Random random = new Random();
+        return random.nextInt(max - min + 1) + min;
     }
 
     protected void initSensor(sensorType sensorType) {

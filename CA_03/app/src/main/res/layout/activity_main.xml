@@ -7,17 +7,6 @@
     tools:context=".Activities.MainActivity">
 
     <Button
-        android:id="@+id/button_gravity"
-        android:layout_width="408dp"
-        android:layout_height="58dp"
-        android:gravity="center|center_horizontal|center_vertical"
-        android:text="Gravity"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button_gyro" />
-
-    <Button
         android:id="@+id/button_gyro"
         android:layout_width="408dp"
         android:layout_height="58dp"
@@ -28,7 +17,18 @@
         app:layout_constraintHorizontal_bias="0.333"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.915" />
+        app:layout_constraintVertical_bias="0.869" />
+
+    <Button
+        android:id="@+id/button_gravity"
+        android:layout_width="408dp"
+        android:layout_height="58dp"
+        android:gravity="center|center_horizontal|center_vertical"
+        android:text="Gravity"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/button_gyro" />
 
     <TextView
         android:id="@+id/textView"

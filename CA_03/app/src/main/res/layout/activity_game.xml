@@ -33,10 +33,12 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewSensor"
         app:layout_constraintVertical_bias="0.512"
-        app:srcCompat="@mipmap/ball" />
+        app:srcCompat="@mipmap/ball"
+        android:visibility="gone"/>
 
     <ImageView
         android:id="@+id/ball2"
+        android:visibility="gone"
         android:layout_width="100dp"
         android:layout_height="100dp"
         app:layout_constraintBottom_toBottomOf="parent"
