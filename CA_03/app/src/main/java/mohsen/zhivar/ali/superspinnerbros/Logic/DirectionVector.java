@@ -1,7 +1,7 @@
 package mohsen.zhivar.ali.superspinnerbros.Logic;
 
 public class DirectionVector {
-    double x, y;
+    private double x, y;
 
     DirectionVector(double x, double y) {
         this.x = x;
@@ -22,6 +22,18 @@ public class DirectionVector {
 
     public double magnitude() {
         return Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2));
+    }
+
+    public DirectionVector divideBy(double d) {
+        return new DirectionVector(x / d, y / d);
+    }
+
+    public DirectionVector multiplyBy(double m) {
+        return new DirectionVector(x * m, y * m);
+    }
+
+    public DirectionVector plus(DirectionVector a) {
+        return new DirectionVector(x + a.x, y + a.y);
     }
 
 }

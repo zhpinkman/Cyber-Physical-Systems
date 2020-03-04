@@ -1,6 +1,7 @@
 package mohsen.zhivar.ali.superspinnerbros.Logic;
 
 import android.util.Log;
+import android.util.Pair;
 import android.widget.ImageView;
 
 import mohsen.zhivar.ali.superspinnerbros.Config.Config;
@@ -16,29 +17,35 @@ public class Ball {
     public Ball(ImageView imageView, double m) {
         this.imageView = imageView;
         this.m = m;
-        x = 50;
-        y = 50;
         imageView.getLayoutParams().height = (int)width;
         imageView.getLayoutParams().width = (int)width;
         imageView.requestLayout();
     }
 
-    public void move(double intervalSeconds, BoardManager boardManager) {
+    public void updateVelocity(double intervalSeconds, BoardManager boardManager) {
         vx = ax * intervalSeconds + vx;
         vy = ay * intervalSeconds + vy;
+    }
+
+
+
+    public Pair<Double, Double> getNextPosition(double intervalSeconds) {
         double newX = 0.5 * ax * Math.pow(intervalSeconds, 2) + vx * intervalSeconds + x;
         double newY = 0.5 * ay * Math.pow(intervalSeconds, 2) + vy * intervalSeconds + y;
-        this.handleCollision(newX, newY, boardManager);
+        return new Pair<>(newX, newY);
+    }
+
+    public void updatePosition(double intervalSeconds) {
         x = 0.5 * ax * Math.pow(intervalSeconds, 2) + vx * intervalSeconds + x;
         y = 0.5 * ay * Math.pow(intervalSeconds, 2) + vy * intervalSeconds + y;
 //        Log.d("POS", "" + x + "|" + y);
 //        Log.d("F", "" + ax + "|" + ay);
 
         refreshImage();
-
     }
 
-    private void handleCollision(double newX, double newY, BoardManager boardManager) {
+
+    public void handleWallCollision(double newX, double newY, BoardManager boardManager) {
         if (boardManager.doesHitWall(newX + width / 2, newY)) {
             vy = Math.abs(vy);
         }

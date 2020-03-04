@@ -63,6 +63,10 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
         ImageView ballImageView1 = findViewById(R.id.ball1);
         ImageView ballImageView2 = findViewById(R.id.ball2);
         boardManager = new BoardManager(getDisplayWidthHeight());
+        ballImageView1.setX(20);
+        ballImageView1.setY(20);
+        ballImageView2.setX(150);
+        ballImageView2.setY(150);
         boardManager.addBall(ballImageView1, Config.Mass1);
         boardManager.addBall(ballImageView2, Config.Mass2);
     }
@@ -84,7 +88,7 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
                 float axisSpeedX = event.values[0];
                 float axisSpeedY = event.values[1];
                 float axisSpeedZ = event.values[2];
-                System.out.println(" A "+axisSpeedX + "|" + axisSpeedY + "|" + axisSpeedZ + "|" + dT);
+//                System.out.println(" A "+axisSpeedX + "|" + axisSpeedY + "|" + axisSpeedZ + "|" + dT);
                 boardManager.updateAnglesByGyroscope(axisSpeedX, axisSpeedY, axisSpeedZ, dT);
             } else {
 
