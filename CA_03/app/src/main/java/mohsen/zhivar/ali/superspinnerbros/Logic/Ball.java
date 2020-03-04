@@ -18,8 +18,8 @@ public class Ball {
         y = imageView.getY();
         Log.d("Image", x + "|" + y + "|" + imageView.getX());
         this.m = m;
-//        x = 0;
-//        y = 0;
+        x = 50;
+        y = 50;
     }
 
     public void move(double intervalSeconds) {
@@ -28,8 +28,8 @@ public class Ball {
         y = 0.5 * ay * Math.pow(intervalSeconds, 2) + vy * intervalSeconds + y;
         vx = ax * intervalSeconds + vx;
         vy = ay * intervalSeconds + vy;
-//        Log.d("POS", "" + x + "|" + y);
-//        Log.d("F", "" + ax + "|" + ay);
+        Log.d("POS", "" + x + "|" + y);
+        Log.d("F", "" + ax + "|" + ay);
         refreshImage();
     }
 
@@ -41,10 +41,39 @@ public class Ball {
     public void updateAcceleration(double angleX, double angleY, double angleZ) {
         double fX = m * Config.g * Math.sin(angleY);
         double fY = m * Config.g * Math.sin(angleX);
-
+        double N = m * Config.g * Math.cos(angleZ);
+        Log.d("N", fX + "|" + fY + "|" + N);
+        if(this.isMoving() || this.canMove(fX, fY, N)){
+            double frictionMagnitude = N * Config.M_k;
+            double frictionX = frictionMagnitude * vx/euclideanNorm(vx, vy);
+            double frictionY = frictionMagnitude * vy/euclideanNorm(vx, vy);
+//            fX += -Math.signum(vx) * frictionX;
+//            fY += -Math.signum(vy) * frictionY;
+        }else{
+//            fX = 0;
+//            fY = 0;
+        }
         ax = fX / m;
         ay = fY / m;
+
         ax *= Config.SPEED_UP;
         ay *= Config.SPEED_UP;
+    }
+
+    private boolean canMove(double fX, double fY, double N) {
+        double fMagnitude = euclideanNorm(fX, fY);
+        double frictionMagnitude = N * Config.M_k;
+        return fMagnitude > frictionMagnitude;
+    }
+
+    private double euclideanNorm(double a, double b){  // Length of Vector (Magnitude)
+        return Math.sqrt(Math.pow(a, 2) + Math.pow(b, 2));
+    }
+
+    private boolean isMoving(){
+        if(euclideanNorm(vx, vy) < Config.BALL_STOP_SPEED_THRESHOLD)
+            return false;
+        else
+            return true;
     }
 }
