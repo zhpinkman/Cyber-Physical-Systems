@@ -2,6 +2,7 @@ package mohsen.zhivar.ali.superspinnerbros.Logic;
 
 import android.util.Log;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import mohsen.zhivar.ali.superspinnerbros.Config.Config;
 
@@ -11,26 +12,63 @@ public class Ball {
     double x, y;  // Position
     double vx = 0, vy = 0;  // Velocity
     double ax = 0, ay = 0;  //acceleration
+    double width = Config.BALL_WIDTH;
 
     public Ball(ImageView imageView, double m) {
         this.imageView = imageView;
-        x = imageView.getX();
-        y = imageView.getY();
-        Log.d("Image", x + "|" + y + "|" + imageView.getX());
         this.m = m;
         x = 50;
         y = 50;
+        imageView.getLayoutParams().height = (int)width;
+        imageView.getLayoutParams().width = (int)width;
+        imageView.requestLayout();
     }
 
-    public void move(double intervalSeconds) {
-        x = 0.5 * ax * Math.pow(intervalSeconds, 2) + vx * intervalSeconds + x;
-//        Log.d("T", intervalSeconds + "|" + 0.5 * ax * Math.pow(intervalSeconds, 2));
-        y = 0.5 * ay * Math.pow(intervalSeconds, 2) + vy * intervalSeconds + y;
+    public void move(double intervalSeconds, BoardManager boardManager) {
         vx = ax * intervalSeconds + vx;
         vy = ay * intervalSeconds + vy;
-        Log.d("POS", "" + x + "|" + y);
-        Log.d("F", "" + ax + "|" + ay);
+        double newX = 0.5 * ax * Math.pow(intervalSeconds, 2) + vx * intervalSeconds + x;
+        double newY = 0.5 * ay * Math.pow(intervalSeconds, 2) + vy * intervalSeconds + y;
+        this.handleCollision(newX, newY, boardManager);
+        x = 0.5 * ax * Math.pow(intervalSeconds, 2) + vx * intervalSeconds + x;
+        y = 0.5 * ay * Math.pow(intervalSeconds, 2) + vy * intervalSeconds + y;
+//        Log.d("POS", "" + x + "|" + y);
+//        Log.d("F", "" + ax + "|" + ay);
+
         refreshImage();
+
+    }
+
+    private void handleCollision(double newX, double newY, BoardManager boardManager) {
+        if (boardManager.doesHitWall(newX + width / 2, newY)) {
+            vy = Math.abs(vy);
+        }
+        if (boardManager.doesHitWall(newX + width / 2, newY + width)) {
+            vy = -Math.abs(vy);
+        }
+        if (boardManager.doesHitWall(newX, newY + width / 2)) {
+            vx = Math.abs(vx);
+        }
+        if (boardManager.doesHitWall(newX + width, newY + width / 2)) {
+            vx = -Math.abs(vx);
+        }
+//        if (boardManager.doesHitWall(newX, newY)) {
+//            vx = Math.abs(vx);
+//            vy = Math.abs(vy);
+//        }
+//        if (boardManager.doesHitWall(newX + width, newY)) {
+//            vx = -Math.abs(vx);
+//            vy = Math.abs(vy);
+//        }
+//        if (boardManager.doesHitWall(newX, newY + width)) {
+//            vx = Math.abs(vx);
+//            vy = -Math.abs(vy);
+//        }
+//        if (boardManager.doesHitWall(newX + width, newY + width)) {
+//            vx = -Math.abs(vx);
+//            vy = -Math.abs(vy);
+//        }
+
     }
 
     private void refreshImage() {
@@ -51,8 +89,8 @@ public class Ball {
                 frictionX = frictionMagnitude * vx / euclideanNorm(vx, vy);
                 frictionY = frictionMagnitude * vy / euclideanNorm(vx, vy);
             }
-            fX += -Math.signum(vx) * frictionX;
-            fY += -Math.signum(vy) * frictionY;
+            fX += -Math.signum(vx) * Math.abs(frictionX);
+            fY += -Math.signum(vy) * Math.abs(frictionY);
             Log.d("NG2", fX + "|" + fY + "|" + frictionMagnitude + "|" + frictionX + "|" + vx + "|" + vy);
         } else {
             fX = 0;
@@ -76,9 +114,12 @@ public class Ball {
     }
 
     private boolean isMoving() {
-        if (euclideanNorm(vx, vy) < Config.BALL_STOP_SPEED_THRESHOLD)
+        if (euclideanNorm(vx, vy) < Config.BALL_STOP_SPEED_THRESHOLD) {
+//            vx = 0;
+//            vy = 0;
             return false;
-        else
+        } else {
             return true;
+        }
     }
 }

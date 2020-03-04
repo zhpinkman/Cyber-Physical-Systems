@@ -32,11 +32,18 @@ public class BoardManager {
     protected TimerTask moveBalls(double intervalSeconds) {
         for (Ball ball : balls) {
             ball.updateAcceleration(angleX, angleY, angleZ);
-            ball.move(intervalSeconds);
+            ball.move(intervalSeconds, this);
         }
         return null;
     }
 
+    public Ball doesHitBall(double x, double y){
+        return null;
+    }
+
+    public boolean doesHitWall(double x, double y){
+        return x >= width || x <= 0 || y >= height || y <= 0;
+    }
 
     public void addBall(ImageView ballImageView, double mass) {
         balls.add(new Ball(ballImageView, mass));
