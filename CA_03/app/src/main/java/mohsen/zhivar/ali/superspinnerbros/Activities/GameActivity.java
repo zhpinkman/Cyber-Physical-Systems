@@ -63,10 +63,6 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
         ImageView ballImageView1 = findViewById(R.id.ball1);
         ImageView ballImageView2 = findViewById(R.id.ball2);
         boardManager = new BoardManager(getDisplayWidthHeight());
-        ballImageView1.setX(20);
-        ballImageView1.setY(20);
-        ballImageView2.setX(150);
-        ballImageView2.setY(150);
         boardManager.addBall(ballImageView1, Config.Mass1);
         boardManager.addBall(ballImageView2, Config.Mass2);
     }

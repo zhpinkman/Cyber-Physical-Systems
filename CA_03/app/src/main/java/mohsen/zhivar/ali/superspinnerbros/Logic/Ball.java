@@ -17,6 +17,8 @@ public class Ball {
     public Ball(ImageView imageView, double m) {
         this.imageView = imageView;
         this.m = m;
+        this.x = 50;
+        this.y = 50;
         imageView.getLayoutParams().height = (int)width;
         imageView.getLayoutParams().width = (int)width;
         imageView.requestLayout();

@@ -39,7 +39,6 @@ public class BoardManager {
 
 //        if (doBallsHit(ball1NewPositions.first, ball2NewPositions.first, ball1NewPositions.second, ball2NewPositions.second)) {
 //            handleBallCollision(ball1NewPositions, ball2NewPositions);
-//            handleBallCollision(ball1NewPositions, ball2NewPositions);
 //        }
 
         balls.get(0).handleWallCollision(ball1NewPositions.first, ball1NewPositions.second, this);
