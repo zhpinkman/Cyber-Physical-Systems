@@ -33,25 +33,30 @@ public class Ball {
         refreshImage();
     }
 
-    private void refreshImage(){
-        imageView.setX((float)x);
-        imageView.setY((float)y);
+    private void refreshImage() {
+        imageView.setX((float) x);
+        imageView.setY((float) y);
     }
 
     public void updateAcceleration(double angleX, double angleY, double angleZ) {
         double fX = m * Config.g * Math.sin(angleY);
         double fY = m * Config.g * Math.sin(angleX);
-        double N = m * Config.g * Math.cos(angleZ);
-        Log.d("N", fX + "|" + fY + "|" + N);
-        if(this.isMoving() || this.canMove(fX, fY, N)){
+        double N = m * Config.g * Math.cos(Math.atan(euclideanNorm(Math.sin(angleX), Math.sin(angleY)) / (Math.cos(angleX) + Math.cos(angleY))));  // ZHIVAR TODO Prove cos theta = cosx*cosy/2
+        Log.d("NG1", fX + "|" + fY + "|" + N);
+        if (this.isMoving() || this.canMove(fX, fY, N)) {
             double frictionMagnitude = N * Config.M_k;
-            double frictionX = frictionMagnitude * vx/euclideanNorm(vx, vy);
-            double frictionY = frictionMagnitude * vy/euclideanNorm(vx, vy);
-//            fX += -Math.signum(vx) * frictionX;
-//            fY += -Math.signum(vy) * frictionY;
-        }else{
-//            fX = 0;
-//            fY = 0;
+            double frictionX = 0;
+            double frictionY = 0;
+            if (euclideanNorm(vx, vy) > 0) {
+                frictionX = frictionMagnitude * vx / euclideanNorm(vx, vy);
+                frictionY = frictionMagnitude * vy / euclideanNorm(vx, vy);
+            }
+            fX += -Math.signum(vx) * frictionX;
+            fY += -Math.signum(vy) * frictionY;
+            Log.d("NG2", fX + "|" + fY + "|" + frictionMagnitude + "|" + frictionX + "|" + vx + "|" + vy);
+        } else {
+            fX = 0;
+            fY = 0;
         }
         ax = fX / m;
         ay = fY / m;
@@ -66,12 +71,12 @@ public class Ball {
         return fMagnitude > frictionMagnitude;
     }
 
-    private double euclideanNorm(double a, double b){  // Length of Vector (Magnitude)
+    private double euclideanNorm(double a, double b) {  // Length of Vector (Magnitude)
         return Math.sqrt(Math.pow(a, 2) + Math.pow(b, 2));
     }
 
-    private boolean isMoving(){
-        if(euclideanNorm(vx, vy) < Config.BALL_STOP_SPEED_THRESHOLD)
+    private boolean isMoving() {
+        if (euclideanNorm(vx, vy) < Config.BALL_STOP_SPEED_THRESHOLD)
             return false;
         else
             return true;
