@@ -66,6 +66,7 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
             public boolean onTouch(View v, MotionEvent event) {
 //                Log.d("Touch", event.getX() + "|" + event.getY());
                 if (event.getAction() == android.view.MotionEvent.ACTION_UP) {
+                    findViewById(R.id.textViewTouch).setVisibility(View.INVISIBLE);
                     ImageView imageView = new ImageView(context);
 
                     ConstraintLayout constraintLayout = (ConstraintLayout) findViewById(R.id.frameLayout);
@@ -73,6 +74,8 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
                             ConstraintLayout.LayoutParams.WRAP_CONTENT,
                             ConstraintLayout.LayoutParams.WRAP_CONTENT
                     );
+                    layoutParams.topMargin = (int)event.getY();
+                    layoutParams.leftMargin = (int)event.getX();
                     constraintLayout.addView(imageView, layoutParams);
                     if (boardManager.getBallsCount() == 0) {
                         imageView.setImageResource(R.drawable.ball1);
@@ -82,7 +85,7 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
                         boardManager.addBall(imageView, Config.Mass2, event.getX(), event.getY());
                     } else {
                         imageView.setImageResource(R.drawable.ball);
-                        boardManager.addBall(imageView, makeRandomInt(1, 5000), event.getX(), event.getY());
+                        boardManager.addBall(imageView, (double)makeRandomInt(1, 5)/100, event.getX(), event.getY());
                     }
                 }
                 return true;

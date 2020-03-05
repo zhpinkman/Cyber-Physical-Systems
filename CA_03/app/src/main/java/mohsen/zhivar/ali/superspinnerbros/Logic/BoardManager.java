@@ -37,6 +37,10 @@ public class BoardManager {
         for (Ball ball : balls) {
             ball.updateAccelerationByAngles(angleX, angleY, angleZ);
             ball.updateVelocity(intervalSeconds, this);
+            Pair<Double, Double> ballNewPositions = ball.getNextPosition(intervalSeconds);
+            ball.handleWallCollision(ballNewPositions.first, ballNewPositions.second, this);
+            ball.updateAccelerationByAngles(angleX, angleY, angleZ);
+            ball.updateVelocity(intervalSeconds, this);
         }
 
         for (int i = 0; i < balls.size(); i++) {  // Handle Ball Collision
@@ -52,8 +56,7 @@ public class BoardManager {
         }
 
         for (Ball ball : balls) {  // Handle Wall Collision and update position
-            Pair<Double, Double> ballNewPositions = ball.getNextPosition(intervalSeconds);
-            ball.handleWallCollision(ballNewPositions.first, ballNewPositions.second, this);
+
             ball.updatePosition(intervalSeconds);
         }
         return null;
