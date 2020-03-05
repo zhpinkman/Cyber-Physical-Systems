@@ -10,16 +10,13 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
-import android.util.Log;
 import android.util.Pair;
 import android.view.Display;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -105,6 +102,7 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
             sensorManager.registerListener(this, sensor, SensorManager.SENSOR_DELAY_FASTEST);
         } else {
             sensor = sensorManager.getDefaultSensor(Sensor.TYPE_GRAVITY);
+            sensorManager.registerListener(this, sensor, SensorManager.SENSOR_DELAY_FASTEST);
         }
     }
 
@@ -136,7 +134,11 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
 //                System.out.println(" A "+axisSpeedX + "|" + axisSpeedY + "|" + axisSpeedZ + "|" + dT);
                 boardManager.updateAnglesByGyroscope(axisSpeedX, axisSpeedY, axisSpeedZ, dT);
             } else {
-
+                float axisYAcceleration = -event.values[0];
+                float axisXAcceleration = event.values[1];
+                float axisZAcceleration = event.values[2]; // this axis doesn't matter for our purpose
+//                System.out.println("zhivar: " + axisXAcceleration + ", " + axisYAcceleration + ", " + axisZAcceleration);
+                boardManager.updateAccelerationByGravity(axisXAcceleration, axisYAcceleration, axisZAcceleration);
             }
         }
         timestamp = event.timestamp;
