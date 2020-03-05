@@ -95,9 +95,9 @@ public class BoardManager {
         DirectionVector newV2 = newV2nVector.plus(newV2tVector);
 
         ball1.vx = newV1.getX();
-        ball1.vx = newV1.getY();
+        ball1.vy = newV1.getY();
         ball2.vx = newV2.getX();
-        ball2.vx = newV2.getY();
+        ball2.vy = newV2.getY();
     }
 
 
