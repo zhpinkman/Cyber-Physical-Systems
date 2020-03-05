@@ -14,6 +14,7 @@ public class BoardManager {
     List<Ball> balls = new ArrayList<>();
     int width, height;
     double angleX, angleY, angleZ;  // Only X and Y matter // so why we have angleZ :)))
+    double Ax, Ay, Az;
 
     public BoardManager(Pair<Integer, Integer> widthHeight) {
         width = widthHeight.first;
@@ -34,7 +35,7 @@ public class BoardManager {
 
     protected synchronized TimerTask moveBalls(double intervalSeconds) {
         for (Ball ball : balls) {
-            ball.updateAcceleration(angleX, angleY, angleZ);
+            ball.updateAccelerationByAngles(angleX, angleY, angleZ);
             ball.updateVelocity(intervalSeconds, this);
         }
 
@@ -49,15 +50,6 @@ public class BoardManager {
                 }
             }
         }
-//        Pair<Double, Double> ball1NewPositions = balls.get(0).getNextPosition(intervalSeconds);
-//        Pair<Double, Double> ball2NewPositions = balls.get(1).getNextPosition(intervalSeconds);
-
-//        if (doBallsHit(ball1NewPositions.first, ball2NewPositions.first, ball1NewPositions.second, ball2NewPositions.second)) {
-//            handleBallCollision(ball1NewPositions, ball2NewPositions);
-//        }
-
-//        balls.get(0).handleWallCollision(ball1NewPositions.first, ball1NewPositions.second, this);
-//        balls.get(1).handleWallCollision(ball2NewPositions.first, ball2NewPositions.second, this);
 
         for (Ball ball : balls) {  // Handle Wall Collision and update position
             Pair<Double, Double> ballNewPositions = ball.getNextPosition(intervalSeconds);
@@ -126,4 +118,9 @@ public class BoardManager {
     }
 
 
+    public void updateAccelerationByGravity(float axisXAcceleration, float axisYAcceleration, float axisZAcceleration) {
+        angleX = Math.asin(axisXAcceleration / Config.g);
+        angleY = Math.asin(axisYAcceleration / Config.g);
+        angleZ = Math.asin(axisZAcceleration / Config.g);
+    }
 }

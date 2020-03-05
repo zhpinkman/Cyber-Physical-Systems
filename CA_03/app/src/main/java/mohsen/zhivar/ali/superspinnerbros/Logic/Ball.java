@@ -1,6 +1,5 @@
 package mohsen.zhivar.ali.superspinnerbros.Logic;
 
-import android.util.Log;
 import android.util.Pair;
 import android.widget.ImageView;
 
@@ -84,11 +83,11 @@ public class Ball {
         imageView.setY((float) y);
     }
 
-    public void updateAcceleration(double angleX, double angleY, double angleZ) {
+    public void updateAccelerationByAngles(double angleX, double angleY, double angleZ) {
         double fX = m * Config.g * Math.sin(angleY);
         double fY = m * Config.g * Math.sin(angleX);
         double N = m * Config.g * Math.cos(Math.atan(euclideanNorm(Math.sin(angleX), Math.sin(angleY)) / (Math.cos(angleX) + Math.cos(angleY))));
-        Log.d("NG1", fX + "|" + fY + "|" + N);
+//        Log.d("NG1", fX + "|" + fY + "|" + N);
         if (this.isMoving() || this.canMove(fX, fY, N)) {
             double frictionMagnitude = N * Config.M_k;
             double frictionX = 0;
@@ -99,7 +98,7 @@ public class Ball {
             }
             fX += -Math.signum(vx) * Math.abs(frictionX);
             fY += -Math.signum(vy) * Math.abs(frictionY);
-            Log.d("NG2", fX + "|" + fY + "|" + frictionMagnitude + "|" + frictionX + "|" + vx + "|" + vy);
+//            Log.d("NG2", fX + "|" + fY + "|" + frictionMagnitude + "|" + frictionX + "|" + vx + "|" + vy);
         } else {
             fX = 0;
             fY = 0;
@@ -110,6 +109,19 @@ public class Ball {
         ax *= Config.SPEED_UP;
         ay *= Config.SPEED_UP;
     }
+
+//    public void updateAccelerationByBoardAccelerations(double Ax, double Ay, double Az) {
+//        double angles[] = convertAccelerationsToAngles(Ax, Ay, Az);
+//        updateAccelerationByAngles(angles[0], angles[1], angles[2]);
+//    }
+//
+//    private double[] convertAccelerationsToAngles(double ax, double ay, double az) {
+//        double result[] = new double[3];
+//        result[0] = Math.asin(ax / Config.g);
+//        result[1] = Math.asin(ay / Config.g);
+//        result[2] = Math.asin(az / Config.g);
+//        return result;
+//    }
 
     private boolean canMove(double fX, double fY, double N) {
         double fMagnitude = euclideanNorm(fX, fY);
