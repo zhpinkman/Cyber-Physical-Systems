@@ -1,0 +1,3 @@
+[submodule "realtime-propeller-led-display"]
+	path = realtime-propeller-led-display
+	url = https://github.com/zhpinkman/realtime-propeller-led-display
